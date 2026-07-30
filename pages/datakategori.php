@@ -57,12 +57,9 @@ $queryKategori = mysqli_query($koneksi, "
                         <tr>
 
                             <th width="70">No</th>
-
                             <th>Nama Kategori</th>
-
                             <th width="220">Tanggal Dibuat</th>
-
-                            <th width="150">Aksi</th>
+                            <th width="170">Aksi</th>
 
                         </tr>
 
@@ -70,77 +67,76 @@ $queryKategori = mysqli_query($koneksi, "
 
                     <tbody>
 
-                    <?php
+                        <?php
 
-                    if(mysqli_num_rows($queryKategori) > 0){
+                        if (mysqli_num_rows($queryKategori) > 0) {
 
-                        $no = 1;
+                            $no = 1;
 
-                        while($kategori = mysqli_fetch_assoc($queryKategori)){
+                            while ($kategori = mysqli_fetch_assoc($queryKategori)) {
 
-                    ?>
+                        ?>
 
-                        <tr>
+                                <tr>
 
-                            <td><?= $no++; ?></td>
+                                    <td><?= $no++; ?></td>
 
-                            <td><?= htmlspecialchars($kategori['nama_kategori']); ?></td>
+                                    <td><?= htmlspecialchars($kategori['nama_kategori']); ?></td>
 
-                            <td><?= date('d M Y H:i', strtotime($kategori['created_at'])); ?></td>
+                                    <td><?= date('d M Y H:i', strtotime($kategori['created_at'])); ?></td>
 
-                            <td>
+                                    <td>
 
-                                <a
-                                    href="index.php?page=editkategori&id=<?= $kategori['id']; ?>"
-                                    class="btn btn-warning btn-sm">
+                                        <a href="index.php?page=editkategori&id=<?= $kategori['id']; ?>"
+                                            class="btn btn-warning btn-sm">
 
-                                    <i class="ti ti-edit"></i>
+                                            <i class="ti ti-edit"></i>
 
-                                </a>
+                                        </a>
 
-                                <button
-                                    class="btn btn-danger btn-sm"
-                                    disabled>
+                                        <a href="proses/hapuskategori.php?id=<?= $kategori['id']; ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Yakin ingin menghapus kategori ini?')">
 
-                                    <i class="ti ti-trash"></i>
+                                            <i class="ti ti-trash"></i>
 
-                                </button>
+                                        </a>
 
-                            </td>
+                                    </td>
 
-                        </tr>
+                                </tr>
 
-                    <?php
+                        <?php
 
-                        }
+                            }
 
-                    }else{
+                        } else {
 
-                    ?>
+                        ?>
 
-                        <tr>
+                            <tr>
 
-                            <td colspan="4" class="text-center py-5">
+                                <td colspan="4" class="text-center py-5">
 
-                                <i class="ti ti-folder-off fs-1 text-secondary"></i>
+                                    <i class="ti ti-folder-off fs-1 text-secondary"></i>
 
-                                <h5 class="mt-3">
+                                    <h5 class="mt-3">
 
-                                    Belum Ada Data Kategori
+                                        Belum Ada Data Kategori
 
-                                </h5>
+                                    </h5>
 
-                                <p class="text-muted">
+                                    <p class="text-muted">
 
-                                    Silakan tambahkan kategori terlebih dahulu.
+                                        Silakan tambahkan kategori terlebih dahulu.
 
-                                </p>
+                                    </p>
 
-                            </td>
+                                </td>
 
-                        </tr>
+                            </tr>
 
-                    <?php } ?>
+                        <?php } ?>
 
                     </tbody>
 
