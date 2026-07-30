@@ -5,18 +5,17 @@
 
         <div>
 
-            <h2 class="fw-bold mb-1">
+            <h2 class="fw-bold text-dark mb-1">
                 Tambah Kategori
             </h2>
 
             <p class="text-muted mb-0">
-                Tambahkan kategori barang baru.
+                Tambahkan kategori barang baru ke dalam sistem SmartMart.
             </p>
 
         </div>
 
-        <a href="index.php?page=datakategori"
-            class="btn btn-secondary">
+        <a href="index.php?page=datakategori" class="btn btn-secondary">
 
             <i class="ti ti-arrow-left"></i>
 
@@ -26,11 +25,13 @@
 
     </div>
 
+    <!-- Card Form -->
+
     <div class="card shadow-sm border-0 rounded-3">
 
-        <div class="card-header bg-white">
+        <div class="card-header bg-white py-3">
 
-            <h5 class="mb-0">
+            <h5 class="mb-0 fw-bold">
 
                 Form Tambah Kategori
 
@@ -40,11 +41,11 @@
 
         <div class="card-body">
 
-            <form>
+            <form action="proses/tambahkategori.php" method="POST">
 
-                <div class="mb-3">
+                <div class="mb-4">
 
-                    <label class="form-label">
+                    <label class="form-label fw-semibold">
 
                         Nama Kategori
 
@@ -52,30 +53,79 @@
 
                     <input
                         type="text"
+                        name="nama_kategori"
                         class="form-control"
-                        placeholder="Masukkan nama kategori">
+                        placeholder="Masukkan nama kategori..."
+                        autocomplete="off"
+                        maxlength="100"
+                        required>
+
+                    <small class="text-muted">
+
+                        Contoh: Minuman, Makanan, Snack, Peralatan Rumah Tangga.
+
+                    </small>
 
                 </div>
 
-                <button
-                    type="submit"
-                    class="btn btn-primary">
+                <hr>
 
-                    <i class="ti ti-device-floppy"></i>
+                <div class="d-flex gap-2">
 
-                    Simpan
+                    <button
+                        type="submit"
+                        name="simpan"
+                        class="btn btn-primary">
 
-                </button>
+                        <i class="ti ti-device-floppy"></i>
 
-                <a
-                    href="index.php?page=datakategori"
-                    class="btn btn-light">
+                        Simpan
 
-                    Batal
+                    </button>
 
-                </a>
+                    <a
+                        href="index.php?page=datakategori"
+                        class="btn btn-light border">
+
+                        <i class="ti ti-x"></i>
+
+                        Batal
+
+                    </a>
+
+                </div>
 
             </form>
+
+        </div>
+
+    </div>
+
+    <!-- Informasi -->
+
+    <div class="card shadow-sm border-0 mt-4">
+
+        <div class="card-header bg-white">
+
+            <h6 class="mb-0 fw-bold">
+
+                💡 Informasi
+
+            </h6>
+
+        </div>
+
+        <div class="card-body">
+
+            <ul class="mb-0 text-muted">
+
+                <li>Nama kategori tidak boleh kosong.</li>
+
+                <li>Nama kategori tidak boleh sama dengan kategori yang sudah ada.</li>
+
+                <li>Gunakan nama kategori yang singkat dan mudah dipahami.</li>
+
+            </ul>
 
         </div>
 

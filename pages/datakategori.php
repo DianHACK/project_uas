@@ -7,6 +7,7 @@ $queryKategori = mysqli_query($koneksi, "
 ");
 
 ?>
+
 <div class="container-fluid px-4 py-3">
 
     <!-- Header -->
@@ -24,7 +25,7 @@ $queryKategori = mysqli_query($koneksi, "
 
         </div>
 
-        <a href="#" class="btn btn-primary">
+        <a href="index.php?page=tambahkategori" class="btn btn-primary">
 
             <i class="ti ti-plus"></i>
 
@@ -38,7 +39,7 @@ $queryKategori = mysqli_query($koneksi, "
 
     <div class="card shadow-sm border-0 rounded-3">
 
-        <div class="card-header bg-white py-3 border-bottom">
+        <div class="card-header bg-white py-3">
 
             <h5 class="mb-0 fw-bold">
 
@@ -62,72 +63,97 @@ $queryKategori = mysqli_query($koneksi, "
 
                             <th>Nama Kategori</th>
 
-                            <th width="200">Aksi</th>
+                            <th width="220">Tanggal Dibuat</th>
+
+                            <th width="150">Aksi</th>
 
                         </tr>
 
                     </thead>
-<tbody>
 
-<?php
+                    <tbody>
 
-if(mysqli_num_rows($queryKategori) > 0){
+                    <?php
 
-    $no = 1;
+                    if(mysqli_num_rows($queryKategori) > 0){
 
-    while($kategori = mysqli_fetch_assoc($queryKategori)){
+                        $no = 1;
 
-?>
+                        while($kategori = mysqli_fetch_assoc($queryKategori)){
 
-<tr>
+                    ?>
 
-    <td><?= $no++; ?></td>
+                        <tr>
 
-    <td>
+                            <td><?= $no++; ?></td>
 
-        <?= htmlspecialchars($kategori['nama_kategori']); ?>
+                            <td>
 
-    </td>
+                                <?= htmlspecialchars($kategori['nama_kategori']); ?>
 
-    <td>
+                            </td>
 
-        <button class="btn btn-warning btn-sm" disabled>
+                            <td>
 
-            <i class="ti ti-edit"></i>
+                                <?= date('d M Y H:i', strtotime($kategori['created_at'])); ?>
 
-        </button>
+                            </td>
 
-        <button class="btn btn-danger btn-sm" disabled>
+                            <td>
 
-            <i class="ti ti-trash"></i>
+                                <button
+                                    class="btn btn-warning btn-sm"
+                                    disabled>
 
-        </button>
+                                    <i class="ti ti-edit"></i>
 
-    </td>
+                                </button>
 
-</tr>
+                                <button
+                                    class="btn btn-danger btn-sm"
+                                    disabled>
 
-<?php
+                                    <i class="ti ti-trash"></i>
 
-    }
+                                </button>
 
-}else{
+                            </td>
 
-?>
+                        </tr>
 
-<tr>
+                    <?php
 
-    <td colspan="3" class="text-center text-muted py-5">
+                        }
 
-        Belum ada data kategori.
+                    }else{
 
-    </td>
+                    ?>
 
-</tr>
+                        <tr>
 
-<?php } ?>
+                            <td colspan="4" class="text-center py-5">
 
-</tbody>
+                                <i class="ti ti-folder-off fs-1 text-secondary"></i>
+
+                                <h5 class="mt-3">
+
+                                    Belum Ada Data Kategori
+
+                                </h5>
+
+                                <p class="text-muted">
+
+                                    Silakan tambahkan kategori terlebih dahulu.
+
+                                </p>
+
+                            </td>
+
+                        </tr>
+
+                    <?php } ?>
+
+                    </tbody>
 
                 </table>
 
