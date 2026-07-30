@@ -1,12 +1,8 @@
 <?php
-
+// =========================================================================
+// TIMEZONE & GREETING SETUP
+// =========================================================================
 date_default_timezone_set('Asia/Jakarta');
-
-/*
-|--------------------------------------------------------------------------
-| Sapaan Otomatis
-|--------------------------------------------------------------------------
-*/
 
 $jam = date('H');
 
@@ -20,12 +16,9 @@ if ($jam >= 5 && $jam < 11) {
     $salam = "Selamat Malam";
 }
 
-/*
-|--------------------------------------------------------------------------
-| Format Tanggal Indonesia
-|--------------------------------------------------------------------------
-*/
-
+// =========================================================================
+// FORMAT TANGGAL INDONESIA
+// =========================================================================
 $hari = [
     'Sunday'    => 'Minggu',
     'Monday'    => 'Senin',
@@ -57,29 +50,21 @@ $tanggalIndonesia =
     $bulan[date('F')] . " " .
     date('Y');
 
-/*
-|--------------------------------------------------------------------------
-| Dashboard Statistics
-|--------------------------------------------------------------------------
-*/
-
-// Total Barang
+// =========================================================================
+// DASHBOARD STATISTICS & INVENTORY INFO
+// =========================================================================
 $qBarang = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM barang");
 $barang = mysqli_fetch_assoc($qBarang);
 
-// Total Kategori
 $qKategori = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM kategori");
 $kategori = mysqli_fetch_assoc($qKategori);
 
-// Total Rak
 $qRak = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM rak");
 $rak = mysqli_fetch_assoc($qRak);
 
-// Total Transaksi
 $qTransaksi = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM transaksi");
 $transaksi = mysqli_fetch_assoc($qTransaksi);
 
-// Informasi Persediaan (Part 2)
 $qStokInfo = mysqli_query($koneksi, "
     SELECT 
         SUM(stok) as total_stok,
@@ -88,12 +73,9 @@ $qStokInfo = mysqli_query($koneksi, "
 ");
 $stokInfo = mysqli_fetch_assoc($qStokInfo);
 
-/*
-|--------------------------------------------------------------------------
-| Barang Hampir Habis
-|--------------------------------------------------------------------------
-*/
-
+// =========================================================================
+// LOW STOCK ITEMS (BARANG HAMPIR HABIS)
+// =========================================================================
 $qStok = mysqli_query($koneksi, "
     SELECT nama_barang, stok
     FROM barang
@@ -102,25 +84,23 @@ $qStok = mysqli_query($koneksi, "
     LIMIT 5
 ");
 
-/*
-|--------------------------------------------------------------------------
-| Transaksi Terakhir
-|--------------------------------------------------------------------------
-*/
-
+// =========================================================================
+// LATEST TRANSACTIONS (TRANSAKSI TERAKHIR)
+// =========================================================================
 $qLastTransaksi = mysqli_query($koneksi, "
     SELECT *
     FROM transaksi
     ORDER BY tanggal DESC
     LIMIT 5
 ");
-
 ?>
 
-<!-- WADAH UTAMA KONTEN (Agar aman dari sidebar) -->
+<!-- WADAH UTAMA KONTEN (Aman dari Sidebar) -->
 <div class="container-fluid px-4 py-3">
 
-    <!-- Welcome Banner -->
+    <!-- ===================================================================== -->
+    <!-- WELCOME BANNER -->
+    <!-- ===================================================================== -->
     <div class="card overflow-hidden bg-primary text-white border-0 shadow-sm mb-4 rounded-4">
         <div class="card-body p-4 p-md-5">
             <div class="row align-items-center">
@@ -150,7 +130,9 @@ $qLastTransaksi = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <!-- Statistik Cards -->
+    <!-- ===================================================================== -->
+    <!-- STATISTIK CARDS -->
+    <!-- ===================================================================== -->
     <div class="row g-3 mb-4">
         <!-- Kategori -->
         <div class="col-xl-3 col-md-6">
@@ -237,7 +219,9 @@ $qLastTransaksi = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <!-- PART 1: Quick Action -->
+    <!-- ===================================================================== -->
+    <!-- QUICK ACTION -->
+    <!-- ===================================================================== -->
     <div class="card shadow-sm border-0 mb-4 rounded-3">
         <div class="card-header bg-white py-3 border-bottom">
             <h5 class="mb-0 fw-bold text-dark fs-6">
@@ -274,7 +258,9 @@ $qLastTransaksi = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <!-- Ringkasan Dashboard & Informasi Persediaan -->
+    <!-- ===================================================================== -->
+    -- RINGKASAN & STATUS SISTEM -->
+    <!-- ===================================================================== -->
     <div class="row g-4 mb-4">
         <div class="col-lg-8">
             <div class="card shadow-sm border-0 rounded-3 h-100">
@@ -347,7 +333,7 @@ $qLastTransaksi = mysqli_query($koneksi, "
                         </li>
                     </ul>
 
-                    <!-- PART 3: Aktivitas Sistem -->
+                    <!-- Aktivitas Sistem -->
                     <div class="p-3 bg-light rounded-3 border">
                         <h6 class="fw-bold text-dark fs-7 mb-2">Hari ini</h6>
                         <ul class="list-unstyled mb-0 small text-muted">
@@ -362,10 +348,120 @@ $qLastTransaksi = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <!-- PART 4: Footer Dashboard -->
-    <footer class="text-center py-4 mt-4 border-top text-muted small">
-        <p class="mb-1 fw-semibold text-dark">SmartMart Inventory System</p>
-        <p class="mb-0">Version 1.0.0 &bull; Developed by Kelompok DevOps</p>
-    </footer>
+    <!-- ===================================================================== -->
+    <!-- BARANG HAMPIR HABIS (Dengan Empty State Profesional & Responsive Table) -->
+    <!-- ===================================================================== -->
+    <div class="card shadow-sm border-0 mb-4 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-dark fs-6">⚠️ Barang Hampir Habis</h5>
+        </div>
+        <div class="card-body p-0">
+            <?php if (mysqli_num_rows($qStok) > 0): ?>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">Nama Barang</th>
+                                <th class="text-end pe-4">Stok</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($qStok)): ?>
+                                <tr>
+                                    <td class="ps-4 fw-semibold"><?= htmlspecialchars($row['nama_barang']); ?></td>
+                                    <td class="text-end pe-4">
+                                        <span class="badge bg-danger-subtle text-danger px-3 py-1 rounded-pill"><?= $row['stok']; ?> pcs</span>
+                                    </td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-5">
+                    <i class="ti ti-database-off fs-1 text-secondary"></i>
+                    <h5 class="mt-3">Belum Ada Data</h5>
+                    <p class="text-muted">Data akan muncul setelah sistem digunakan.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TRANSAKSI TERAKHIR (Dengan Empty State Profesional & Responsive Table) -->
+    <!-- ===================================================================== -->
+    <div class="card shadow-sm border-0 mb-4 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-dark fs-6">🛒 Transaksi Terakhir</h5>
+        </div>
+        <div class="card-body p-0">
+            <?php if (mysqli_num_rows($qLastTransaksi) > 0): ?>
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4">ID Transaksi</th>
+                                <th>Tanggal</th>
+                                <th class="text-end pe-4">Total Harga</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <?php while ($row = mysqli_fetch_assoc($qLastTransaksi)): ?>
+                                <tr>
+                                    <td class="ps-4 fw-semibold">#<?= $row['id'] ?? $row['id_transaksi'] ?? '-'; ?></td>
+                                    <td><?= $row['tanggal'] ?? '-'; ?></td>
+                                    <td class="text-end pe-4">Rp <?= number_format($row['total_harga'] ?? 0, 0, ',', '.'); ?></td>
+                                </tr>
+                            <?php endwhile; ?>
+                        </tbody>
+                    </table>
+                </div>
+            <?php else: ?>
+                <div class="text-center py-5">
+                    <i class="ti ti-database-off fs-1 text-secondary"></i>
+                    <h5 class="mt-3">Belum Ada Data</h5>
+                    <p class="text-muted">Data akan muncul setelah sistem digunakan.</p>
+                </div>
+            <?php endif; ?>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- TIPS PENGGUNAAN -->
+    <!-- ===================================================================== -->
+    <div class="card shadow-sm border-0 mt-4 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-dark fs-6">
+                💡 Tips Penggunaan
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <ul class="mb-0 text-muted">
+                <li class="mb-2">Pastikan kategori dibuat sebelum menambahkan barang.</li>
+                <li class="mb-2">Periksa stok barang secara berkala.</li>
+                <li class="mb-2">Lakukan transaksi melalui menu Penjualan.</li>
+                <li>Cetak laporan setelah transaksi selesai.</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- FOOTER DASHBOARD -->
+    <!-- ===================================================================== -->
+    <div class="card shadow-sm border-0 mt-4 rounded-3">
+        <div class="card-body text-center py-4">
+            <h5 class="fw-bold text-primary mb-2">
+                SmartMart Inventory System
+            </h5>
+            <p class="mb-1 text-muted">
+                Sistem Informasi Inventaris Barang Berbasis Web
+            </p>
+            <small class="text-muted">
+                Version 1.0.0
+                &bull;
+                Developed by Kelompok DevOps
+            </small>
+        </div>
+    </div>
 
 </div>
