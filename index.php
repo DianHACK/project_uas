@@ -16,6 +16,7 @@ $halaman = [
     'databarang',
     'tambahbarang',
     'datakategori',
+    'editkategori',
     'tambahkategori',
     'datarak',
     'tambahrak',

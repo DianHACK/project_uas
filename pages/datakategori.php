@@ -10,7 +10,6 @@ $queryKategori = mysqli_query($koneksi, "
 
 <div class="container-fluid px-4 py-3">
 
-    <!-- Header -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
         <div>
@@ -34,8 +33,6 @@ $queryKategori = mysqli_query($koneksi, "
         </a>
 
     </div>
-
-    <!-- Card -->
 
     <div class="card shadow-sm border-0 rounded-3">
 
@@ -87,27 +84,19 @@ $queryKategori = mysqli_query($koneksi, "
 
                             <td><?= $no++; ?></td>
 
-                            <td>
+                            <td><?= htmlspecialchars($kategori['nama_kategori']); ?></td>
 
-                                <?= htmlspecialchars($kategori['nama_kategori']); ?>
-
-                            </td>
+                            <td><?= date('d M Y H:i', strtotime($kategori['created_at'])); ?></td>
 
                             <td>
 
-                                <?= date('d M Y H:i', strtotime($kategori['created_at'])); ?>
-
-                            </td>
-
-                            <td>
-
-                                <button
-                                    class="btn btn-warning btn-sm"
-                                    disabled>
+                                <a
+                                    href="index.php?page=editkategori&id=<?= $kategori['id']; ?>"
+                                    class="btn btn-warning btn-sm">
 
                                     <i class="ti ti-edit"></i>
 
-                                </button>
+                                </a>
 
                                 <button
                                     class="btn btn-danger btn-sm"
