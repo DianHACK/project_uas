@@ -7,7 +7,7 @@ if (!isset($_GET['id'])) {
 
 }
 
-$id = (int)$_GET['id'];
+$id = (int) $_GET['id'];
 
 $query = mysqli_query($koneksi, "
     SELECT *
@@ -15,7 +15,7 @@ $query = mysqli_query($koneksi, "
     WHERE id='$id'
 ");
 
-if(mysqli_num_rows($query) == 0){
+if (mysqli_num_rows($query) == 0) {
 
     header("Location: index.php?page=datakategori");
     exit;
@@ -71,7 +71,7 @@ $data = mysqli_fetch_assoc($query);
 
         <div class="card-body">
 
-            <form action="#" method="POST">
+            <form action="proses/editkategori.php" method="POST">
 
                 <input
                     type="hidden"
@@ -91,12 +91,14 @@ $data = mysqli_fetch_assoc($query);
                         name="nama_kategori"
                         class="form-control"
                         value="<?= htmlspecialchars($data['nama_kategori']); ?>"
+                        autocomplete="off"
                         required>
 
                 </div>
 
                 <button
                     type="submit"
+                    name="update"
                     class="btn btn-warning">
 
                     <i class="ti ti-edit"></i>
