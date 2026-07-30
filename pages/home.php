@@ -20,6 +20,14 @@ $rak = mysqli_fetch_assoc($qRak);
 $qTransaksi = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM transaksi");
 $transaksi = mysqli_fetch_assoc($qTransaksi);
 
+// Barang Hampir Habis
+$qStok = mysqli_query($koneksi, "
+    SELECT nama_barang, stok
+    FROM barang
+    WHERE stok <= 5
+    ORDER BY stok ASC
+    LIMIT 5
+");
 ?>
 
 <div class="container-fluid">
@@ -276,5 +284,78 @@ $transaksi = mysqli_fetch_assoc($qTransaksi);
         </div>
 
     </div>
+
+    <!-- Barang Hampir Habis -->
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0 text-danger">
+            ⚠ Barang Hampir Habis
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <?php if(mysqli_num_rows($qStok) > 0){ ?>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>Nama Barang</th>
+
+                            <th width="120">Stok</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <?php while($stok = mysqli_fetch_assoc($qStok)){ ?>
+
+                            <tr>
+
+                                <td><?= $stok['nama_barang']; ?></td>
+
+                                <td>
+
+                                    <span class="badge bg-danger">
+
+                                        <?= $stok['stok']; ?>
+
+                                    </span>
+
+                                </td>
+
+                            </tr>
+
+                        <?php } ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        <?php } else { ?>
+
+            <div class="alert alert-success mb-0">
+
+                Semua stok barang masih aman.
+
+            </div>
+
+        <?php } ?>
+
+    </div>
+
+</div>
 
 </div>
