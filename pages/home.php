@@ -1,3 +1,27 @@
+<?php
+
+// ==========================
+// Dashboard Statistics
+// ==========================
+
+// Total Barang
+$qBarang = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM barang");
+$barang = mysqli_fetch_assoc($qBarang);
+
+// Total Kategori
+$qKategori = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM kategori");
+$kategori = mysqli_fetch_assoc($qKategori);
+
+// Total Rak
+$qRak = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM rak");
+$rak = mysqli_fetch_assoc($qRak);
+
+// Total Transaksi
+$qTransaksi = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM transaksi");
+$transaksi = mysqli_fetch_assoc($qTransaksi);
+
+?>
+
 <div class="container-fluid">
 
     <!-- Welcome Banner -->
@@ -5,7 +29,7 @@
         <div class="card-body p-5">
 
             <span class="badge bg-white text-primary mb-3">
-                Dashboard Swalayan
+                Dashboard SmartMart
             </span>
 
             <h2 class="fw-bold mb-3">
@@ -13,26 +37,29 @@
             </h2>
 
             <p class="fs-4 mb-0">
-                Kelola data kategori, rak, stok barang, serta transaksi
-                penjualan dengan mudah melalui dashboard ini.
+                Kelola kategori, rak, barang, transaksi dan laporan melalui dashboard ini.
             </p>
+
+            <small class="mt-3 d-block opacity-75">
+                <?= date('l, d F Y'); ?>
+            </small>
 
         </div>
     </div>
 
-    <!-- Menu Cepat -->
+    <!-- Menu Dashboard -->
     <div class="row">
 
+        <!-- Kategori -->
         <div class="col-lg-3 col-md-6 mb-4">
+
             <a href="index.php?page=datakategori" class="text-decoration-none">
+
                 <div class="card border-start border-primary border-4 shadow-sm h-100">
+
                     <div class="card-body">
 
-                        <div class="d-flex align-items-center">
-
-                            <div class="rounded bg-primary-subtle p-3 me-3">
-                                <i class="ti ti-category text-primary fs-7"></i>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <div>
 
@@ -40,29 +67,44 @@
                                     Kelola Menu
                                 </small>
 
-                                <h5 class="mb-0">
+                                <h5 class="mt-2 mb-2">
                                     Kategori
                                 </h5>
 
+                                <h3 class="fw-bold text-primary">
+                                    <?= $kategori['total']; ?>
+                                </h3>
+
+                                <small class="text-muted">
+                                    Total Data
+                                </small>
+
+                            </div>
+
+                            <div class="rounded-circle bg-primary-subtle p-3">
+                                <i class="ti ti-category text-primary fs-5"></i>
                             </div>
 
                         </div>
 
                     </div>
+
                 </div>
+
             </a>
+
         </div>
 
+        <!-- Rak -->
         <div class="col-lg-3 col-md-6 mb-4">
+
             <a href="index.php?page=datarak" class="text-decoration-none">
+
                 <div class="card border-start border-success border-4 shadow-sm h-100">
+
                     <div class="card-body">
 
-                        <div class="d-flex align-items-center">
-
-                            <div class="rounded bg-success-subtle p-3 me-3">
-                                <i class="ti ti-building-warehouse text-success fs-7"></i>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <div>
 
@@ -70,29 +112,44 @@
                                     Penyimpanan
                                 </small>
 
-                                <h5 class="mb-0">
-                                    Rak Swalayan
+                                <h5 class="mt-2 mb-2">
+                                    Rak
                                 </h5>
 
+                                <h3 class="fw-bold text-success">
+                                    <?= $rak['total']; ?>
+                                </h3>
+
+                                <small class="text-muted">
+                                    Total Data
+                                </small>
+
+                            </div>
+
+                            <div class="rounded-circle bg-success-subtle p-3">
+                                <i class="ti ti-building-warehouse text-success fs-5"></i>
                             </div>
 
                         </div>
 
                     </div>
+
                 </div>
+
             </a>
+
         </div>
 
+        <!-- Barang -->
         <div class="col-lg-3 col-md-6 mb-4">
+
             <a href="index.php?page=databarang" class="text-decoration-none">
+
                 <div class="card border-start border-warning border-4 shadow-sm h-100">
+
                     <div class="card-body">
 
-                        <div class="d-flex align-items-center">
-
-                            <div class="rounded bg-warning-subtle p-3 me-3">
-                                <i class="ti ti-package text-warning fs-7"></i>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <div>
 
@@ -100,29 +157,44 @@
                                     Inventaris
                                 </small>
 
-                                <h5 class="mb-0">
-                                    Data Barang
+                                <h5 class="mt-2 mb-2">
+                                    Barang
                                 </h5>
 
+                                <h3 class="fw-bold text-warning">
+                                    <?= $barang['total']; ?>
+                                </h3>
+
+                                <small class="text-muted">
+                                    Total Data
+                                </small>
+
+                            </div>
+
+                            <div class="rounded-circle bg-warning-subtle p-3">
+                                <i class="ti ti-package text-warning fs-5"></i>
                             </div>
 
                         </div>
 
                     </div>
+
                 </div>
+
             </a>
+
         </div>
 
+        <!-- Transaksi -->
         <div class="col-lg-3 col-md-6 mb-4">
+
             <a href="index.php?page=penjualan" class="text-decoration-none">
+
                 <div class="card border-start border-danger border-4 shadow-sm h-100">
+
                     <div class="card-body">
 
-                        <div class="d-flex align-items-center">
-
-                            <div class="rounded bg-danger-subtle p-3 me-3">
-                                <i class="ti ti-shopping-cart text-danger fs-7"></i>
-                            </div>
+                        <div class="d-flex justify-content-between align-items-center">
 
                             <div>
 
@@ -130,36 +202,79 @@
                                     Penjualan
                                 </small>
 
-                                <h5 class="mb-0">
-                                    Data Transaksi
+                                <h5 class="mt-2 mb-2">
+                                    Transaksi
                                 </h5>
 
+                                <h3 class="fw-bold text-danger">
+                                    <?= $transaksi['total']; ?>
+                                </h3>
+
+                                <small class="text-muted">
+                                    Total Data
+                                </small>
+
+                            </div>
+
+                            <div class="rounded-circle bg-danger-subtle p-3">
+                                <i class="ti ti-shopping-cart text-danger fs-5"></i>
                             </div>
 
                         </div>
 
                     </div>
+
                 </div>
+
             </a>
+
         </div>
 
     </div>
 
-    <!-- Informasi -->
+    <!-- Informasi Sistem -->
     <div class="card shadow-sm border-0">
-        <div class="card-body">
 
-            <h5 class="fw-bold mb-3">
-                Tentang Sistem
+        <div class="card-header bg-white">
+
+            <h5 class="mb-0">
+                Informasi Sistem
             </h5>
 
-            <p class="text-muted mb-0">
-                Sistem Informasi Swalayan ini dibuat untuk membantu proses
-                pengelolaan data kategori, rak, barang, transaksi penjualan,
-                serta laporan penjualan secara cepat, mudah, dan terstruktur.
-            </p>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4">
+
+                    <h6>👤 Login Sebagai</h6>
+
+                    <p><?= ucwords($_SESSION['username']); ?></p>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <h6>📅 Tanggal</h6>
+
+                    <p><?= date('d F Y'); ?></p>
+
+                </div>
+
+                <div class="col-md-4">
+
+                    <h6>💻 Versi Sistem</h6>
+
+                    <p>Version 1.0.0</p>
+
+                </div>
+
+            </div>
 
         </div>
+
     </div>
 
 </div>
