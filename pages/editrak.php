@@ -1,18 +1,67 @@
+<?php
+
+if (!isset($_GET['id'])) {
+
+    header("Location: index.php?page=datarak");
+    exit;
+
+}
+
+$id = (int) $_GET['id'];
+
+$query = mysqli_query($koneksi, "
+    SELECT *
+    FROM rak
+    WHERE id='$id'
+");
+
+if (mysqli_num_rows($query) == 0) {
+
+    echo "<script>
+
+            alert('Data rak tidak ditemukan.');
+
+            window.location='index.php?page=datarak';
+
+          </script>";
+
+    exit;
+
+}
+
+$rak = mysqli_fetch_assoc($query);
+
+?>
+
 <div class="container-fluid px-4 py-3">
 
-    <div class="mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-        <h2 class="fw-bold text-dark mb-1">
+        <div>
 
-            Edit Rak
+            <h2 class="fw-bold text-dark mb-1">
 
-        </h2>
+                Edit Rak
 
-        <p class="text-muted">
+            </h2>
 
-            Halaman edit data rak.
+            <p class="text-muted mb-0">
 
-        </p>
+                Ubah data rak SmartMart.
+
+            </p>
+
+        </div>
+
+        <a
+            href="index.php?page=datarak"
+            class="btn btn-secondary">
+
+            <i class="ti ti-arrow-left"></i>
+
+            Kembali
+
+        </a>
 
     </div>
 
@@ -20,23 +69,55 @@
 
         <div class="card-body">
 
-            <div class="text-center py-5">
+            <form
+                action="proses/editrak.php"
+                method="POST">
 
-                <i class="ti ti-edit fs-1 text-warning"></i>
+                <input
+                    type="hidden"
+                    name="id"
+                    value="<?= $rak['id']; ?>">
 
-                <h4 class="mt-3">
+                <div class="mb-3">
 
-                    Edit Rak
+                    <label class="form-label fw-semibold">
 
-                </h4>
+                        Nama Rak
 
-                <p class="text-muted">
+                    </label>
 
-                    Form edit rak akan dibuat pada commit berikutnya.
+                    <input
+                        type="text"
+                        name="nama_rak"
+                        class="form-control"
+                        value="<?= htmlspecialchars($rak['nama_rak']); ?>"
+                        required>
 
-                </p>
+                </div>
 
-            </div>
+                <div class="d-flex justify-content-end">
+
+                    <button
+                        type="reset"
+                        class="btn btn-light me-2">
+
+                        Reset
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="ti ti-device-floppy"></i>
+
+                        Update
+
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 

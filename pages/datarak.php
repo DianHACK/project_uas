@@ -155,7 +155,8 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                     <td>
 
-                                        <a href="#"
+                                        <a
+                                            href="index.php?page=editrak&id=<?= $rak['id']; ?>"
                                             class="btn btn-warning btn-sm">
 
                                             <i class="ti ti-edit"></i>
