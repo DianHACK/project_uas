@@ -1,10 +1,29 @@
 <?php
 
-$queryKategori = mysqli_query($koneksi, "
-    SELECT *
-    FROM kategori
-    ORDER BY id DESC
-");
+$keyword = "";
+
+if (isset($_GET['keyword'])) {
+    $keyword = trim($_GET['keyword']);
+}
+
+if ($keyword != "") {
+
+    $queryKategori = mysqli_query($koneksi, "
+        SELECT *
+        FROM kategori
+        WHERE nama_kategori LIKE '%$keyword%'
+        ORDER BY id DESC
+    ");
+
+} else {
+
+    $queryKategori = mysqli_query($koneksi, "
+        SELECT *
+        FROM kategori
+        ORDER BY id DESC
+    ");
+
+}
 
 ?>
 
@@ -38,11 +57,62 @@ $queryKategori = mysqli_query($koneksi, "
 
         <div class="card-header bg-white py-3">
 
-            <h5 class="mb-0 fw-bold">
+            <div class="row align-items-center">
 
-                Daftar Kategori
+                <div class="col-md-6">
 
-            </h5>
+                    <h5 class="mb-0 fw-bold">
+
+                        Daftar Kategori
+
+                    </h5>
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <form method="GET">
+
+                        <input
+                            type="hidden"
+                            name="page"
+                            value="datakategori">
+
+                        <div class="input-group">
+
+                            <input
+                                type="text"
+                                name="keyword"
+                                class="form-control"
+                                placeholder="Cari kategori..."
+                                value="<?= htmlspecialchars($keyword); ?>">
+
+                            <button
+                                class="btn btn-primary"
+                                type="submit">
+
+                                <i class="ti ti-search"></i>
+
+                            </button>
+
+                            <?php if ($keyword != "") { ?>
+
+                                <a href="index.php?page=datakategori"
+                                    class="btn btn-secondary">
+
+                                    Reset
+
+                                </a>
+
+                            <?php } ?>
+
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
 
         </div>
 
@@ -118,17 +188,17 @@ $queryKategori = mysqli_query($koneksi, "
 
                                 <td colspan="4" class="text-center py-5">
 
-                                    <i class="ti ti-folder-off fs-1 text-secondary"></i>
+                                    <i class="ti ti-search-off fs-1 text-secondary"></i>
 
                                     <h5 class="mt-3">
 
-                                        Belum Ada Data Kategori
+                                        Data Tidak Ditemukan
 
                                     </h5>
 
                                     <p class="text-muted">
 
-                                        Silakan tambahkan kategori terlebih dahulu.
+                                        Tidak ada kategori yang sesuai dengan pencarian.
 
                                     </p>
 
