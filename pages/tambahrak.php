@@ -1,18 +1,31 @@
 <div class="container-fluid px-4 py-3">
 
-    <div class="mb-4">
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
 
-        <h2 class="fw-bold text-dark mb-1">
+        <div>
 
-            Tambah Rak
+            <h2 class="fw-bold text-dark mb-1">
 
-        </h2>
+                Tambah Rak
 
-        <p class="text-muted">
+            </h2>
 
-            Tambahkan data rak baru.
+            <p class="text-muted mb-0">
 
-        </p>
+                Tambahkan data rak baru ke SmartMart.
+
+            </p>
+
+        </div>
+
+        <a href="index.php?page=datarak"
+            class="btn btn-secondary">
+
+            <i class="ti ti-arrow-left"></i>
+
+            Kembali
+
+        </a>
 
     </div>
 
@@ -20,23 +33,49 @@
 
         <div class="card-body">
 
-            <div class="text-center py-5">
+            <form action="proses/tambahrak.php"
+                method="POST">
 
-                <i class="ti ti-building-warehouse fs-1 text-success"></i>
+                <div class="mb-3">
 
-                <h4 class="mt-3">
+                    <label class="form-label fw-semibold">
 
-                    Form Tambah Rak
+                        Nama Rak
 
-                </h4>
+                    </label>
 
-                <p class="text-muted">
+                    <input
+                        type="text"
+                        name="nama_rak"
+                        class="form-control"
+                        placeholder="Contoh : Rak Minuman"
+                        required>
 
-                    Form input rak akan dibuat pada commit berikutnya.
+                </div>
 
-                </p>
+                <div class="d-flex justify-content-end">
 
-            </div>
+                    <button
+                        type="reset"
+                        class="btn btn-light me-2">
+
+                        Reset
+
+                    </button>
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary">
+
+                        <i class="ti ti-device-floppy"></i>
+
+                        Simpan
+
+                    </button>
+
+                </div>
+
+            </form>
 
         </div>
 
