@@ -14,7 +14,6 @@ if ($keyword != "") {
         WHERE nama_kategori LIKE '%$keyword%'
         ORDER BY id DESC
     ");
-
 } else {
 
     $queryKategori = mysqli_query($koneksi, "
@@ -22,7 +21,6 @@ if ($keyword != "") {
         FROM kategori
         ORDER BY id DESC
     ");
-
 }
 
 ?>
@@ -34,16 +32,21 @@ if ($keyword != "") {
         <div>
 
             <h2 class="fw-bold text-dark mb-1">
+
                 Data Kategori
+
             </h2>
 
             <p class="text-muted mb-0">
+
                 Kelola seluruh kategori barang SmartMart.
+
             </p>
 
         </div>
 
-        <a href="index.php?page=tambahkategori" class="btn btn-primary">
+        <a href="index.php?page=tambahkategori"
+            class="btn btn-primary">
 
             <i class="ti ti-plus"></i>
 
@@ -57,7 +60,7 @@ if ($keyword != "") {
 
         <div class="card-header bg-white py-3">
 
-            <div class="row align-items-center">
+            <div class="row">
 
                 <div class="col-md-6">
 
@@ -88,8 +91,8 @@ if ($keyword != "") {
                                 value="<?= htmlspecialchars($keyword); ?>">
 
                             <button
-                                class="btn btn-primary"
-                                type="submit">
+                                type="submit"
+                                class="btn btn-primary">
 
                                 <i class="ti ti-search"></i>
 
@@ -97,7 +100,8 @@ if ($keyword != "") {
 
                             <?php if ($keyword != "") { ?>
 
-                                <a href="index.php?page=datakategori"
+                                <a
+                                    href="index.php?page=datakategori"
                                     class="btn btn-secondary">
 
                                     Reset
@@ -126,9 +130,12 @@ if ($keyword != "") {
 
                         <tr>
 
-                            <th width="70">No</th>
+                            <th width="60">No</th>
+
                             <th>Nama Kategori</th>
+
                             <th width="220">Tanggal Dibuat</th>
+
                             <th width="170">Aksi</th>
 
                         </tr>
@@ -151,20 +158,30 @@ if ($keyword != "") {
 
                                     <td><?= $no++; ?></td>
 
-                                    <td><?= htmlspecialchars($kategori['nama_kategori']); ?></td>
+                                    <td>
 
-                                    <td><?= date('d M Y H:i', strtotime($kategori['created_at'])); ?></td>
+                                        <?= htmlspecialchars($kategori['nama_kategori']); ?>
+
+                                    </td>
 
                                     <td>
 
-                                        <a href="index.php?page=editkategori&id=<?= $kategori['id']; ?>"
+                                        <?= date('d M Y H:i', strtotime($kategori['created_at'])); ?>
+
+                                    </td>
+
+                                    <td>
+
+                                        <a
+                                            href="index.php?page=editkategori&id=<?= $kategori['id']; ?>"
                                             class="btn btn-warning btn-sm">
 
                                             <i class="ti ti-edit"></i>
 
                                         </a>
 
-                                        <a href="proses/hapuskategori.php?id=<?= $kategori['id']; ?>"
+                                        <a
+                                            href="proses/hapuskategori.php?id=<?= $kategori['id']; ?>"
                                             class="btn btn-danger btn-sm"
                                             onclick="return confirm('Yakin ingin menghapus kategori ini?')">
 
@@ -176,31 +193,20 @@ if ($keyword != "") {
 
                                 </tr>
 
-                        <?php
+                            <?php
 
                             }
-
                         } else {
 
-                        ?>
+                            ?>
 
                             <tr>
 
-                                <td colspan="4" class="text-center py-5">
+                                <td
+                                    colspan="4"
+                                    class="text-center py-5">
 
-                                    <i class="ti ti-search-off fs-1 text-secondary"></i>
-
-                                    <h5 class="mt-3">
-
-                                        Data Tidak Ditemukan
-
-                                    </h5>
-
-                                    <p class="text-muted">
-
-                                        Tidak ada kategori yang sesuai dengan pencarian.
-
-                                    </p>
+                                    Tidak ada data kategori.
 
                                 </td>
 
