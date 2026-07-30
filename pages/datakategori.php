@@ -1,3 +1,12 @@
+<?php
+
+$queryKategori = mysqli_query($koneksi, "
+    SELECT *
+    FROM kategori
+    ORDER BY id DESC
+");
+
+?>
 <div class="container-fluid px-4 py-3">
 
     <!-- Header -->
@@ -58,20 +67,67 @@
                         </tr>
 
                     </thead>
+<tbody>
 
-                    <tbody>
+<?php
 
-                        <tr>
+if(mysqli_num_rows($queryKategori) > 0){
 
-                            <td colspan="3" class="text-center text-muted py-5">
+    $no = 1;
 
-                                Belum ada data kategori.
+    while($kategori = mysqli_fetch_assoc($queryKategori)){
 
-                            </td>
+?>
 
-                        </tr>
+<tr>
 
-                    </tbody>
+    <td><?= $no++; ?></td>
+
+    <td>
+
+        <?= htmlspecialchars($kategori['nama_kategori']); ?>
+
+    </td>
+
+    <td>
+
+        <button class="btn btn-warning btn-sm" disabled>
+
+            <i class="ti ti-edit"></i>
+
+        </button>
+
+        <button class="btn btn-danger btn-sm" disabled>
+
+            <i class="ti ti-trash"></i>
+
+        </button>
+
+    </td>
+
+</tr>
+
+<?php
+
+    }
+
+}else{
+
+?>
+
+<tr>
+
+    <td colspan="3" class="text-center text-muted py-5">
+
+        Belum ada data kategori.
+
+    </td>
+
+</tr>
+
+<?php } ?>
+
+</tbody>
 
                 </table>
 
