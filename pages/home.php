@@ -79,6 +79,15 @@ $rak = mysqli_fetch_assoc($qRak);
 $qTransaksi = mysqli_query($koneksi, "SELECT COUNT(*) AS total FROM transaksi");
 $transaksi = mysqli_fetch_assoc($qTransaksi);
 
+// Informasi Persediaan (Part 2)
+$qStokInfo = mysqli_query($koneksi, "
+    SELECT 
+        SUM(stok) as total_stok,
+        COUNT(*) as total_barang
+    FROM barang
+");
+$stokInfo = mysqli_fetch_assoc($qStokInfo);
+
 /*
 |--------------------------------------------------------------------------
 | Barang Hampir Habis
@@ -108,7 +117,7 @@ $qLastTransaksi = mysqli_query($koneksi, "
 
 ?>
 
-<!-- WADAH UTAMA KONTEN (Pembatas Agar Tidak Ketimbun Sidebar) -->
+<!-- WADAH UTAMA KONTEN (Agar aman dari sidebar) -->
 <div class="container-fluid px-4 py-3">
 
     <!-- Welcome Banner -->
@@ -194,7 +203,7 @@ $qLastTransaksi = mysqli_query($koneksi, "
                             <div>
                                 <span class="badge bg-warning-subtle text-warning mb-2 fw-semibold">Inventaris</span>
                                 <h6 class="text-muted mb-1">Barang</h6>
-                                <h3 class="fw-bold text-warning mb-0"><?= $barang['total']; ?></h3>
+                                <h3 class="fw-bold text-warning mb-0"><?= number_format($stokInfo['total_barang'] ?? 0, 0, ',', '.'); ?></h3>
                                 <small class="text-muted fs-7">Total Barang</small>
                             </div>
                             <div class="rounded-circle bg-warning-subtle p-3 text-warning">
@@ -228,21 +237,67 @@ $qLastTransaksi = mysqli_query($koneksi, "
         </div>
     </div>
 
-    <!-- Ringkasan Dashboard & Status Sistem -->
-    <div class="row g-4">
+    <!-- PART 1: Quick Action -->
+    <div class="card shadow-sm border-0 mb-4 rounded-3">
+        <div class="card-header bg-white py-3 border-bottom">
+            <h5 class="mb-0 fw-bold text-dark fs-6">
+                ⚡ Quick Action
+            </h5>
+        </div>
+        <div class="card-body p-4">
+            <div class="row">
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <a href="index.php?page=tambahkategori" class="btn btn-primary w-100 py-3 rounded-3 shadow-sm">
+                        <i class="ti ti-category fs-3"></i><br>
+                        <span class="fw-semibold mt-1 d-block">Tambah Kategori</span>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <a href="index.php?page=tambahrak" class="btn btn-success w-100 py-3 rounded-3 shadow-sm">
+                        <i class="ti ti-building-warehouse fs-3"></i><br>
+                        <span class="fw-semibold mt-1 d-block">Tambah Rak</span>
+                    </a>
+                </div>
+                <div class="col-md-3 mb-3 mb-md-0">
+                    <a href="index.php?page=tambahbarang" class="btn btn-warning w-100 py-3 rounded-3 shadow-sm text-dark">
+                        <i class="ti ti-package fs-3"></i><br>
+                        <span class="fw-semibold mt-1 d-block">Tambah Barang</span>
+                    </a>
+                </div>
+                <div class="col-md-3">
+                    <a href="index.php?page=penjualan" class="btn btn-danger w-100 py-3 rounded-3 shadow-sm">
+                        <i class="ti ti-shopping-cart fs-3"></i><br>
+                        <span class="fw-semibold mt-1 d-block">Penjualan</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Ringkasan Dashboard & Informasi Persediaan -->
+    <div class="row g-4 mb-4">
         <div class="col-lg-8">
-            <div class="card shadow-sm border-0 rounded-3">
+            <div class="card shadow-sm border-0 rounded-3 h-100">
                 <div class="card-header bg-white py-3 border-bottom">
-                    <h5 class="mb-0 fw-bold text-dark fs-6">📊 Ringkasan Dashboard</h5>
+                    <h5 class="mb-0 fw-bold text-dark fs-6">📊 Ringkasan Dashboard & Persediaan</h5>
                 </div>
                 <div class="card-body p-4">
                     <div class="mb-3">
                         <div class="d-flex justify-content-between mb-1">
                             <span class="text-muted small">Total Barang</span>
-                            <strong class="text-dark small"><?= $barang['total']; ?></strong>
+                            <strong class="text-dark small"><?= number_format($stokInfo['total_barang'] ?? 0, 0, ',', '.'); ?></strong>
                         </div>
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar bg-warning rounded-pill" style="width: 100%"></div>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <div class="d-flex justify-content-between mb-1">
+                            <span class="text-muted small">Total Seluruh Stok</span>
+                            <strong class="text-dark small"><?= number_format($stokInfo['total_stok'] ?? 0, 0, ',', '.'); ?> pcs</strong>
+                        </div>
+                        <div class="progress" style="height: 6px;">
+                            <div class="progress-bar bg-success rounded-pill" style="width: 100%"></div>
                         </div>
                     </div>
                     <div class="mb-3">
@@ -252,15 +307,6 @@ $qLastTransaksi = mysqli_query($koneksi, "
                         </div>
                         <div class="progress" style="height: 6px;">
                             <div class="progress-bar bg-primary rounded-pill" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        <div class="d-flex justify-content-between mb-1">
-                            <span class="text-muted small">Total Rak</span>
-                            <strong class="text-dark small"><?= $rak['total']; ?></strong>
-                        </div>
-                        <div class="progress" style="height: 6px;">
-                            <div class="progress-bar bg-success rounded-pill" style="width: 100%"></div>
                         </div>
                     </div>
                     <div>
@@ -282,7 +328,7 @@ $qLastTransaksi = mysqli_query($koneksi, "
                     <h5 class="mb-0 fw-bold text-dark fs-6">🚀 Status Sistem</h5>
                 </div>
                 <div class="card-body p-3">
-                    <ul class="list-group list-group-flush">
+                    <ul class="list-group list-group-flush mb-3">
                         <li class="list-group-item d-flex justify-content-between align-items-center border-0 px-0 py-2">
                             <span class="text-muted small">Database</span>
                             <span class="badge bg-success-subtle text-success px-3 py-1 rounded-pill">Online</span>
@@ -300,9 +346,26 @@ $qLastTransaksi = mysqli_query($koneksi, "
                             <span class="badge bg-primary-subtle text-primary px-3 py-1 rounded-pill">1.0.0</span>
                         </li>
                     </ul>
+
+                    <!-- PART 3: Aktivitas Sistem -->
+                    <div class="p-3 bg-light rounded-3 border">
+                        <h6 class="fw-bold text-dark fs-7 mb-2">Hari ini</h6>
+                        <ul class="list-unstyled mb-0 small text-muted">
+                            <li class="mb-1">✔ Login berhasil</li>
+                            <li class="mb-1">✔ Dashboard aktif</li>
+                            <li class="mb-1">✔ Database Online</li>
+                            <li>✔ Sistem berjalan normal</li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- PART 4: Footer Dashboard -->
+    <footer class="text-center py-4 mt-4 border-top text-muted small">
+        <p class="mb-1 fw-semibold text-dark">SmartMart Inventory System</p>
+        <p class="mb-0">Version 1.0.0 &bull; Developed by Kelompok DevOps</p>
+    </footer>
 
 </div>
