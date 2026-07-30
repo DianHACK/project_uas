@@ -28,6 +28,17 @@ $qStok = mysqli_query($koneksi, "
     ORDER BY stok ASC
     LIMIT 5
 ");
+
+// ==========================
+// Transaksi Terakhir
+// ==========================
+
+$qLastTransaksi = mysqli_query($koneksi, "
+    SELECT *
+    FROM transaksi
+    ORDER BY tanggal DESC
+    LIMIT 5
+");
 ?>
 
 <div class="container-fluid">
@@ -349,6 +360,104 @@ $qStok = mysqli_query($koneksi, "
             <div class="alert alert-success mb-0">
 
                 Semua stok barang masih aman.
+
+            </div>
+
+        <?php } ?>
+
+    </div>
+
+</div>
+
+    <!-- Transaksi Terakhir -->
+<div class="card shadow-sm border-0 mt-4">
+
+    <div class="card-header bg-white">
+
+        <h5 class="mb-0 text-primary">
+            🧾 Transaksi Terakhir
+        </h5>
+
+    </div>
+
+    <div class="card-body">
+
+        <?php if(mysqli_num_rows($qLastTransaksi) > 0){ ?>
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>No</th>
+                            <th>Invoice</th>
+                            <th>Tanggal</th>
+                            <th>Total</th>
+                            <th>Kasir</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                        <?php
+                        $no = 1;
+                        while($trx = mysqli_fetch_assoc($qLastTransaksi)){
+                        ?>
+
+                        <tr>
+
+                            <td><?= $no++; ?></td>
+
+                            <td>
+
+                                <?php
+                                if(!empty($trx['no_invoice'])){
+                                    echo $trx['no_invoice'];
+                                }else{
+                                    echo "TRX-".$trx['id'];
+                                }
+                                ?>
+
+                            </td>
+
+                            <td>
+
+                                <?= date('d-m-Y', strtotime($trx['tanggal'])); ?>
+
+                            </td>
+
+                            <td>
+
+                                Rp <?= number_format($trx['total_harga'],0,',','.'); ?>
+
+                            </td>
+
+                            <td>
+
+                                <?= $trx['kasir']; ?>
+
+                            </td>
+
+                        </tr>
+
+                        <?php } ?>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        <?php } else { ?>
+
+            <div class="alert alert-info mb-0">
+
+                Belum ada transaksi.
 
             </div>
 
