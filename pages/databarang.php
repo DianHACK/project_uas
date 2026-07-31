@@ -61,7 +61,7 @@ ORDER BY barang.id DESC
                             <th>Stok</th>
                             <th>Expired</th>
                             <th>Gambar</th>
-                            <th width="120">Aksi</th>
+                            <th width="140">Aksi</th>
 
                         </tr>
 
@@ -82,39 +82,27 @@ ORDER BY barang.id DESC
                                 <tr>
 
                                     <td class="text-center">
-
                                         <?= $no++; ?>
-
                                     </td>
 
                                     <td>
-
                                         <?= htmlspecialchars($row['kode_barang']); ?>
-
                                     </td>
 
                                     <td>
-
                                         <?= htmlspecialchars($row['nama_barang']); ?>
-
                                     </td>
 
                                     <td>
-
                                         <?= htmlspecialchars($row['nama_kategori']); ?>
-
                                     </td>
 
                                     <td>
-
                                         <?= htmlspecialchars($row['nama_rak']); ?>
-
                                     </td>
 
                                     <td>
-
                                         Rp <?= number_format($row['harga'], 0, ',', '.'); ?>
-
                                     </td>
 
                                     <td class="text-center">
@@ -122,34 +110,37 @@ ORDER BY barang.id DESC
                                         <?php if ($row['stok'] > 10) { ?>
 
                                             <span class="badge bg-success">
-
                                                 <?= $row['stok']; ?>
-
                                             </span>
 
                                         <?php } elseif ($row['stok'] > 0) { ?>
 
                                             <span class="badge bg-warning text-dark">
-
                                                 <?= $row['stok']; ?>
-
                                             </span>
 
                                         <?php } else { ?>
 
                                             <span class="badge bg-danger">
-
                                                 Habis
-
                                             </span>
 
                                         <?php } ?>
 
                                     </td>
 
-                                    <td>
+                                    <td class="text-center">
 
-                                        <?= $row['expired_date']; ?>
+                                        <?php
+                                        $expired = strtotime($row['expired_date']);
+                                        $today = strtotime(date('Y-m-d'));
+
+                                        if ($expired < $today) {
+                                            echo '<span class="badge bg-danger">' . date('d-m-Y', $expired) . '</span>';
+                                        } else {
+                                            echo '<span class="badge bg-info">' . date('d-m-Y', $expired) . '</span>';
+                                        }
+                                        ?>
 
                                     </td>
 
@@ -158,17 +149,16 @@ ORDER BY barang.id DESC
                                         <?php if (!empty($row['gambar'])) { ?>
 
                                             <img
-                                                src="assets/images/barang/<?= $row['gambar']; ?>"
+                                                src="assets/images/barang/<?= htmlspecialchars($row['gambar']); ?>"
                                                 width="60"
                                                 height="60"
-                                                style="object-fit:cover;border-radius:8px;">
+                                                class="rounded border"
+                                                style="object-fit:cover;">
 
                                         <?php } else { ?>
 
                                             <span class="text-muted">
-
                                                 Tidak ada gambar
-
                                             </span>
 
                                         <?php } ?>
@@ -180,9 +170,19 @@ ORDER BY barang.id DESC
                                         <a
                                             href="index.php?page=editbarang&id=<?= $row['id']; ?>"
                                             class="btn btn-warning btn-sm"
-                                            title="Edit Barang">
+                                            title="Edit">
 
                                             <i class="ti ti-edit"></i>
+
+                                        </a>
+
+                                        <a
+                                            href="proses/hapusbarang.php?id=<?= $row['id']; ?>"
+                                            class="btn btn-danger btn-sm"
+                                            title="Hapus"
+                                            onclick="return confirm('Yakin ingin menghapus barang ini?')">
+
+                                            <i class="ti ti-trash"></i>
 
                                         </a>
 
@@ -201,7 +201,11 @@ ORDER BY barang.id DESC
 
                                 <td colspan="10" class="text-center py-4">
 
-                                    Belum ada data barang.
+                                    <div class="text-muted">
+
+                                        Belum ada data barang.
+
+                                    </div>
 
                                 </td>
 
