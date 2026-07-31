@@ -34,7 +34,10 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
 
         <div class="card-body">
 
-            <form action="#" method="post" enctype="multipart/form-data">
+            <form action="proses/tambahbarang.php"
+                method="POST"
+                enctype="multipart/form-data"
+                autocomplete="off">
 
                 <div class="row">
 
@@ -48,7 +51,8 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                             type="text"
                             class="form-control"
                             name="kode_barang"
-                            placeholder="Masukkan kode barang">
+                            placeholder="Masukkan kode barang"
+                            required>
 
                     </div>
 
@@ -62,7 +66,8 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                             type="text"
                             class="form-control"
                             name="nama_barang"
-                            placeholder="Masukkan nama barang">
+                            placeholder="Masukkan nama barang"
+                            required>
 
                     </div>
 
@@ -74,7 +79,8 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
 
                         <select
                             name="id_kategori"
-                            class="form-select">
+                            class="form-select"
+                            required>
 
                             <option value="">
                                 -- Pilih Kategori --
@@ -102,7 +108,8 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
 
                         <select
                             name="id_rak"
-                            class="form-select">
+                            class="form-select"
+                            required>
 
                             <option value="">
                                 -- Pilih Rak --
@@ -132,7 +139,9 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                             type="number"
                             class="form-control"
                             name="harga"
-                            placeholder="Masukkan harga barang">
+                            placeholder="Masukkan harga barang"
+                            min="0"
+                            required>
 
                     </div>
 
@@ -146,7 +155,9 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                             type="number"
                             class="form-control"
                             name="stok"
-                            placeholder="Masukkan jumlah stok">
+                            placeholder="Masukkan jumlah stok"
+                            min="0"
+                            required>
 
                     </div>
 
@@ -159,7 +170,8 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                         <input
                             type="date"
                             class="form-control"
-                            name="expired_date">
+                            name="expired_date"
+                            required>
 
                     </div>
 
@@ -172,7 +184,13 @@ $queryRak = mysqli_query($koneksi, "SELECT * FROM rak ORDER BY nama_rak ASC");
                         <input
                             type="file"
                             class="form-control"
-                            name="gambar">
+                            name="gambar"
+                            accept=".jpg,.jpeg,.png"
+                            required>
+
+                        <small class="text-muted">
+                            Format: JPG, JPEG, PNG
+                        </small>
 
                     </div>
 
