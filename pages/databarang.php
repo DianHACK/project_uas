@@ -32,8 +32,10 @@ ORDER BY barang.id DESC
         </div>
 
         <a href="index.php?page=tambahbarang" class="btn btn-primary">
+
             <i class="ti ti-plus"></i>
             Tambah Barang
+
         </a>
 
     </div>
@@ -49,6 +51,7 @@ ORDER BY barang.id DESC
                     <thead class="table-primary text-center">
 
                         <tr>
+
                             <th width="50">No</th>
                             <th>Kode Barang</th>
                             <th>Nama Barang</th>
@@ -58,6 +61,8 @@ ORDER BY barang.id DESC
                             <th>Stok</th>
                             <th>Expired</th>
                             <th>Gambar</th>
+                            <th width="120">Aksi</th>
+
                         </tr>
 
                     </thead>
@@ -77,27 +82,39 @@ ORDER BY barang.id DESC
                                 <tr>
 
                                     <td class="text-center">
+
                                         <?= $no++; ?>
+
                                     </td>
 
                                     <td>
-                                        <?= $row['kode_barang']; ?>
+
+                                        <?= htmlspecialchars($row['kode_barang']); ?>
+
                                     </td>
 
                                     <td>
-                                        <?= $row['nama_barang']; ?>
+
+                                        <?= htmlspecialchars($row['nama_barang']); ?>
+
                                     </td>
 
                                     <td>
-                                        <?= $row['nama_kategori']; ?>
+
+                                        <?= htmlspecialchars($row['nama_kategori']); ?>
+
                                     </td>
 
                                     <td>
-                                        <?= $row['nama_rak']; ?>
+
+                                        <?= htmlspecialchars($row['nama_rak']); ?>
+
                                     </td>
 
                                     <td>
+
                                         Rp <?= number_format($row['harga'], 0, ',', '.'); ?>
+
                                     </td>
 
                                     <td class="text-center">
@@ -105,19 +122,25 @@ ORDER BY barang.id DESC
                                         <?php if ($row['stok'] > 10) { ?>
 
                                             <span class="badge bg-success">
+
                                                 <?= $row['stok']; ?>
+
                                             </span>
 
                                         <?php } elseif ($row['stok'] > 0) { ?>
 
-                                            <span class="badge bg-warning">
+                                            <span class="badge bg-warning text-dark">
+
                                                 <?= $row['stok']; ?>
+
                                             </span>
 
                                         <?php } else { ?>
 
                                             <span class="badge bg-danger">
+
                                                 Habis
+
                                             </span>
 
                                         <?php } ?>
@@ -134,7 +157,8 @@ ORDER BY barang.id DESC
 
                                         <?php if (!empty($row['gambar'])) { ?>
 
-                                            <img src="assets/images/barang/<?= $row['gambar']; ?>"
+                                            <img
+                                                src="assets/images/barang/<?= $row['gambar']; ?>"
                                                 width="60"
                                                 height="60"
                                                 style="object-fit:cover;border-radius:8px;">
@@ -142,26 +166,40 @@ ORDER BY barang.id DESC
                                         <?php } else { ?>
 
                                             <span class="text-muted">
+
                                                 Tidak ada gambar
+
                                             </span>
 
                                         <?php } ?>
 
                                     </td>
 
+                                    <td class="text-center">
+
+                                        <a
+                                            href="index.php?page=editbarang&id=<?= $row['id']; ?>"
+                                            class="btn btn-warning btn-sm"
+                                            title="Edit Barang">
+
+                                            <i class="ti ti-edit"></i>
+
+                                        </a>
+
+                                    </td>
+
                                 </tr>
 
-                        <?php
+                            <?php
 
                             }
-
                         } else {
 
-                        ?>
+                            ?>
 
                             <tr>
 
-                                <td colspan="9" class="text-center py-4">
+                                <td colspan="10" class="text-center py-4">
 
                                     Belum ada data barang.
 
