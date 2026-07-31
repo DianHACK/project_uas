@@ -88,27 +88,19 @@ $totalRak = mysqli_num_rows($queryRak);
                         <tr>
 
                             <th width="60">
-
                                 No
-
                             </th>
 
                             <th>
-
                                 Nama Rak
-
                             </th>
 
                             <th width="220">
-
                                 Tanggal Dibuat
-
                             </th>
 
                             <th width="170">
-
                                 Aksi
-
                             </th>
 
                         </tr>
@@ -132,9 +124,7 @@ $totalRak = mysqli_num_rows($queryRak);
                                 <tr>
 
                                     <td>
-
                                         <?= $no++; ?>
-
                                     </td>
 
                                     <td>
@@ -163,8 +153,10 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                         </a>
 
-                                        <a href="#"
-                                            class="btn btn-danger btn-sm">
+                                        <a
+                                            href="proses/hapusrak.php?id=<?= $rak['id']; ?>"
+                                            class="btn btn-danger btn-sm"
+                                            onclick="return confirm('Yakin ingin menghapus data rak ini?');">
 
                                             <i class="ti ti-trash"></i>
 
@@ -174,13 +166,12 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                 </tr>
 
-                        <?php
+                            <?php
 
                             }
-
                         } else {
 
-                        ?>
+                            ?>
 
                             <tr>
 

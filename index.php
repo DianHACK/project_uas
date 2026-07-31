@@ -4,6 +4,10 @@ require_once "proses/helper.php";
 
 session_start();
 
+// Tampilkan error saat development
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
 // Cek Login
 if (!isset($_SESSION['login'])) {
     header("Location: form-login.php");
@@ -12,6 +16,7 @@ if (!isset($_SESSION['login'])) {
 
 // Daftar halaman yang diizinkan
 $halaman = [
+    // Dashboard
     'home',
 
     // Barang
@@ -29,7 +34,7 @@ $halaman = [
     'tambahrak',
     'editrak',
 
-    // Penjualan
+    // Transaksi
     'penjualan',
     'keranjang',
 
@@ -38,7 +43,7 @@ $halaman = [
 ];
 
 // Halaman default
-$page = $_GET['page'] ?? 'home';
+$page = isset($_GET['page']) ? $_GET['page'] : 'home';
 
 // Validasi halaman
 if (!in_array($page, $halaman)) {
@@ -74,7 +79,7 @@ if (!in_array($page, $halaman)) {
                 <?php include "komponen/navbar.php"; ?>
 
                 <!-- Isi Halaman -->
-                <?php include "pages/$page.php"; ?>
+                <?php include "pages/" . $page . ".php"; ?>
 
             </div>
 
