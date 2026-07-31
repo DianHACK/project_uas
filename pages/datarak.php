@@ -1,10 +1,25 @@
 <?php
 
-$queryRak = mysqli_query($koneksi, "
-    SELECT *
-    FROM rak
-    ORDER BY id DESC
-");
+$keyword = isset($_GET['keyword'])
+    ? mysqli_real_escape_string($koneksi, trim($_GET['keyword']))
+    : '';
+
+if ($keyword != "") {
+
+    $queryRak = mysqli_query($koneksi, "
+        SELECT *
+        FROM rak
+        WHERE nama_rak LIKE '%$keyword%'
+        ORDER BY id DESC
+    ");
+} else {
+
+    $queryRak = mysqli_query($koneksi, "
+        SELECT *
+        FROM rak
+        ORDER BY id DESC
+    ");
+}
 
 $totalRak = mysqli_num_rows($queryRak);
 
@@ -34,6 +49,47 @@ $totalRak = mysqli_num_rows($queryRak);
             Tambah Rak
 
         </a>
+
+    </div>
+
+    <div class="card shadow-sm border-0 rounded-3 mb-3">
+
+        <div class="card-body">
+
+            <form method="GET">
+
+                <input type="hidden" name="page" value="datarak">
+
+                <div class="row">
+
+                    <div class="col-md-10">
+
+                        <input
+                            type="text"
+                            name="keyword"
+                            class="form-control"
+                            placeholder="Cari nama rak..."
+                            value="<?= htmlspecialchars($keyword); ?>">
+
+                    </div>
+
+                    <div class="col-md-2 d-grid">
+
+                        <button type="submit" class="btn btn-primary">
+
+                            <i class="ti ti-search"></i>
+
+                            Cari
+
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </form>
+
+        </div>
 
     </div>
 
@@ -115,8 +171,6 @@ $totalRak = mysqli_num_rows($queryRak);
 
                             $no = 1;
 
-                            mysqli_data_seek($queryRak, 0);
-
                             while ($rak = mysqli_fetch_assoc($queryRak)) {
 
                         ?>
@@ -188,7 +242,15 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                     <p class="text-muted">
 
-                                        Silakan tambahkan data rak terlebih dahulu.
+                                        <?php if ($keyword != "") { ?>
+
+                                            Data rak dengan kata kunci <strong><?= htmlspecialchars($keyword); ?></strong> tidak ditemukan.
+
+                                        <?php } else { ?>
+
+                                            Silakan tambahkan data rak terlebih dahulu.
+
+                                        <?php } ?>
 
                                     </p>
 
