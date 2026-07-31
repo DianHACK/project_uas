@@ -13,15 +13,27 @@ if (!isset($_SESSION['login'])) {
 // Daftar halaman yang diizinkan
 $halaman = [
     'home',
+
+    // Barang
     'databarang',
     'tambahbarang',
+    'editbarang',
+
+    // Kategori
     'datakategori',
-    'editkategori',
     'tambahkategori',
+    'editkategori',
+
+    // Rak
     'datarak',
     'tambahrak',
+    'editrak',
+
+    // Penjualan
     'penjualan',
     'keranjang',
+
+    // Laporan
     'laporan'
 ];
 
