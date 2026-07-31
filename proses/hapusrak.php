@@ -9,14 +9,14 @@ if (!isset($_GET['id'])) {
 
 $id = (int) $_GET['id'];
 
-// Cek apakah data rak ada
-$cek = mysqli_query($koneksi, "
+// Cek apakah rak ada
+$cekRak = mysqli_query($koneksi, "
     SELECT *
     FROM rak
     WHERE id='$id'
 ");
 
-if (mysqli_num_rows($cek) == 0) {
+if (mysqli_num_rows($cekRak) == 0) {
 
     echo "<script>
         alert('Data rak tidak ditemukan.');
@@ -26,7 +26,26 @@ if (mysqli_num_rows($cek) == 0) {
     exit();
 }
 
-// Hapus data
+// Cek apakah rak masih digunakan oleh barang
+$cekBarang = mysqli_query($koneksi, "
+    SELECT COUNT(*) AS total
+    FROM barang
+    WHERE id_rak='$id'
+");
+
+$dataBarang = mysqli_fetch_assoc($cekBarang);
+
+if ($dataBarang['total'] > 0) {
+
+    echo "<script>
+        alert('Rak tidak dapat dihapus karena masih digunakan oleh data barang.');
+        window.location='../index.php?page=datarak';
+    </script>";
+
+    exit();
+}
+
+// Hapus rak
 $hapus = mysqli_query($koneksi, "
     DELETE FROM rak
     WHERE id='$id'
