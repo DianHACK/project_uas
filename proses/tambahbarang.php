@@ -12,7 +12,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $stok         = (int) $_POST['stok'];
     $expired_date = $_POST['expired_date'];
 
-    // Validasi
+    // Validasi input kosong
     if (
         empty($kode_barang) ||
         empty($nama_barang) ||
@@ -30,17 +30,55 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         exit;
     }
 
+    // Validasi kode barang tidak boleh sama
+    $cek = mysqli_query($koneksi, "
+        SELECT id
+        FROM barang
+        WHERE kode_barang='$kode_barang'
+    ");
+
+    if (mysqli_num_rows($cek) > 0) {
+
+        echo "<script>
+                alert('Kode barang sudah digunakan!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
+    // Validasi harga
+    if ($harga <= 0) {
+
+        echo "<script>
+                alert('Harga harus lebih dari 0!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
+    // Validasi stok
+    if ($stok < 0) {
+
+        echo "<script>
+                alert('Stok tidak boleh negatif!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
     $gambar = "";
 
     if (isset($_FILES['gambar']) && $_FILES['gambar']['error'] == 0) {
 
         $namaFile = $_FILES['gambar']['name'];
         $tmpFile  = $_FILES['gambar']['tmp_name'];
+        $ukuran   = $_FILES['gambar']['size'];
 
         $extensi = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
 
         $allowed = ['jpg', 'jpeg', 'png'];
 
+        // Validasi format gambar
         if (!in_array($extensi, $allowed)) {
 
             echo "<script>
@@ -50,14 +88,32 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             exit;
         }
 
+        // Validasi ukuran gambar maksimal 2MB
+        if ($ukuran > 2 * 1024 * 1024) {
+
+            echo "<script>
+                    alert('Ukuran gambar maksimal 2 MB!');
+                    window.history.back();
+                  </script>";
+            exit;
+        }
+
         $namaBaru = time() . "_" . mt_rand(1000, 9999) . "." . $extensi;
 
-        move_uploaded_file(
+        if (move_uploaded_file(
             $tmpFile,
             "../assets/images/barang/" . $namaBaru
-        );
+        )) {
 
-        $gambar = $namaBaru;
+            $gambar = $namaBaru;
+        } else {
+
+            echo "<script>
+                    alert('Gagal mengupload gambar!');
+                    window.history.back();
+                  </script>";
+            exit;
+        }
     }
 
     $query = "INSERT INTO barang

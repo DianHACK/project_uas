@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $expired_date  = $_POST['expired_date'];
     $gambar_lama   = $_POST['gambar_lama'];
 
+    // Validasi input kosong
     if (
         empty($kode_barang) ||
         empty($nama_barang) ||
@@ -31,6 +32,43 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         exit;
     }
 
+    // Validasi kode barang tidak boleh sama (kecuali data sendiri)
+    $cek = mysqli_query($koneksi, "
+        SELECT id
+        FROM barang
+        WHERE kode_barang='$kode_barang'
+        AND id != '$id'
+    ");
+
+    if (mysqli_num_rows($cek) > 0) {
+
+        echo "<script>
+                alert('Kode barang sudah digunakan!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
+    // Validasi harga
+    if ($harga <= 0) {
+
+        echo "<script>
+                alert('Harga harus lebih dari 0!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
+    // Validasi stok
+    if ($stok < 0) {
+
+        echo "<script>
+                alert('Stok tidak boleh negatif!');
+                window.history.back();
+              </script>";
+        exit;
+    }
+
     $gambar = $gambar_lama;
 
     // Upload gambar baru
@@ -38,11 +76,13 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         $namaFile = $_FILES['gambar']['name'];
         $tmpFile  = $_FILES['gambar']['tmp_name'];
+        $ukuran   = $_FILES['gambar']['size'];
 
         $extensi = strtolower(pathinfo($namaFile, PATHINFO_EXTENSION));
 
         $allowed = ['jpg', 'jpeg', 'png'];
 
+        // Validasi format
         if (!in_array($extensi, $allowed)) {
 
             echo "<script>
@@ -52,60 +92,66 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             exit;
         }
 
-        $namaBaru = time() . "_" . mt_rand(1000, 9999) . "." . $extensi;
+        // Validasi ukuran maksimal 2MB
+        if ($ukuran > 2 * 1024 * 1024) {
 
-        move_uploaded_file(
-            $tmpFile,
-            "../assets/images/barang/" . $namaBaru
-        );
-
-        if (!empty($gambar_lama)) {
-
-            $path = "../assets/images/barang/" . $gambar_lama;
-
-            if (file_exists($path)) {
-
-                unlink($path);
-            }
+            echo "<script>
+                    alert('Ukuran gambar maksimal 2 MB!');
+                    window.history.back();
+                  </script>";
+            exit;
         }
 
-        $gambar = $namaBaru;
+        $namaBaru = time() . "_" . mt_rand(1000, 9999) . "." . $extensi;
+
+        if (move_uploaded_file($tmpFile, "../assets/images/barang/" . $namaBaru)) {
+
+            // Hapus gambar lama jika ada
+            if (!empty($gambar_lama)) {
+
+                $path = "../assets/images/barang/" . $gambar_lama;
+
+                if (file_exists($path)) {
+
+                    unlink($path);
+                }
+            }
+
+            $gambar = $namaBaru;
+        } else {
+
+            echo "<script>
+                    alert('Gagal mengupload gambar!');
+                    window.history.back();
+                  </script>";
+            exit;
+        }
     }
 
     $update = mysqli_query($koneksi, "
-
         UPDATE barang SET
-
-            kode_barang   = '$kode_barang',
-            nama_barang   = '$nama_barang',
-            id_kategori   = '$id_kategori',
-            id_rak        = '$id_rak',
-            harga         = '$harga',
-            stok          = '$stok',
-            gambar        = '$gambar',
-            expired_date  = '$expired_date'
-
+            kode_barang  = '$kode_barang',
+            nama_barang  = '$nama_barang',
+            id_kategori  = '$id_kategori',
+            id_rak       = '$id_rak',
+            harga        = '$harga',
+            stok         = '$stok',
+            gambar       = '$gambar',
+            expired_date = '$expired_date'
         WHERE id = '$id'
-
     ");
 
     if ($update) {
 
         echo "<script>
-
-            alert('Barang berhasil diperbarui');
-
-            window.location='../index.php?page=databarang';
-
-        </script>";
+                alert('Barang berhasil diperbarui.');
+                window.location='../index.php?page=databarang';
+              </script>";
     } else {
 
         echo "<script>
-
-            alert('Gagal memperbarui barang');
-
-            window.history.back();
-
-        </script>";
+                alert('Gagal memperbarui barang!');
+                window.history.back();
+              </script>";
     }
 }
