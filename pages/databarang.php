@@ -25,6 +25,8 @@ $where
 ORDER BY barang.id DESC
 ");
 
+$total_barang = mysqli_num_rows($query);
+
 ?>
 
 <div class="container-fluid px-4 py-3">
@@ -40,6 +42,12 @@ ORDER BY barang.id DESC
             <p class="text-muted mb-0">
                 Kelola seluruh data barang SmartMart.
             </p>
+
+            <div class="mt-2">
+                <span class="badge bg-primary">
+                    Total Barang : <?= $total_barang; ?>
+                </span>
+            </div>
 
         </div>
 
@@ -118,7 +126,7 @@ ORDER BY barang.id DESC
 
                         <?php
 
-                        if (mysqli_num_rows($query) > 0) {
+                        if ($total_barang > 0) {
 
                             $no = 1;
 
@@ -154,39 +162,50 @@ ORDER BY barang.id DESC
 
                                     <td class="text-center">
 
-                                        <?php if ($row['stok'] > 10) { ?>
+                                        <?php
 
-                                            <span class="badge bg-success">
-                                                <?= $row['stok']; ?>
-                                            </span>
+                                        if ($row['stok'] == 0) {
 
-                                        <?php } elseif ($row['stok'] > 0) { ?>
+                                            echo '<span class="badge bg-danger">Habis</span>';
+                                        } elseif ($row['stok'] <= 10) {
 
-                                            <span class="badge bg-warning text-dark">
-                                                <?= $row['stok']; ?>
-                                            </span>
+                                            echo '<span class="badge bg-warning text-dark">Menipis (' . $row['stok'] . ')</span>';
+                                        } else {
 
-                                        <?php } else { ?>
+                                            echo '<span class="badge bg-success">Aman (' . $row['stok'] . ')</span>';
+                                        }
 
-                                            <span class="badge bg-danger">
-                                                Habis
-                                            </span>
-
-                                        <?php } ?>
+                                        ?>
 
                                     </td>
 
                                     <td class="text-center">
 
                                         <?php
-                                        $expired = strtotime($row['expired_date']);
+
                                         $today = strtotime(date('Y-m-d'));
+                                        $expired = strtotime($row['expired_date']);
+                                        $selisih = ($expired - $today) / 86400;
 
                                         if ($expired < $today) {
-                                            echo '<span class="badge bg-danger">' . date('d-m-Y', $expired) . '</span>';
+
+                                            echo '<span class="badge bg-danger">
+                                                    Expired<br>' .
+                                                date('d-m-Y', $expired) .
+                                                '</span>';
+                                        } elseif ($selisih <= 30) {
+
+                                            echo '<span class="badge bg-warning text-dark">
+                                                    Hampir Expired<br>' .
+                                                date('d-m-Y', $expired) .
+                                                '</span>';
                                         } else {
-                                            echo '<span class="badge bg-info">' . date('d-m-Y', $expired) . '</span>';
+
+                                            echo '<span class="badge bg-success">' .
+                                                date('d-m-Y', $expired) .
+                                                '</span>';
                                         }
+
                                         ?>
 
                                     </td>
@@ -195,17 +214,23 @@ ORDER BY barang.id DESC
 
                                         <?php if (!empty($row['gambar'])) { ?>
 
-                                            <img
-                                                src="assets/images/barang/<?= htmlspecialchars($row['gambar']); ?>"
-                                                width="60"
-                                                height="60"
-                                                class="rounded border"
-                                                style="object-fit:cover;">
+                                            <a href="assets/images/barang/<?= htmlspecialchars($row['gambar']); ?>" target="_blank">
+
+                                                <img
+                                                    src="assets/images/barang/<?= htmlspecialchars($row['gambar']); ?>"
+                                                    width="60"
+                                                    height="60"
+                                                    class="rounded border shadow-sm"
+                                                    style="object-fit:cover;">
+
+                                            </a>
 
                                         <?php } else { ?>
 
                                             <span class="text-muted">
+
                                                 Tidak ada gambar
+
                                             </span>
 
                                         <?php } ?>
@@ -217,7 +242,8 @@ ORDER BY barang.id DESC
                                         <a
                                             href="index.php?page=editbarang&id=<?= $row['id']; ?>"
                                             class="btn btn-warning btn-sm"
-                                            title="Edit">
+                                            data-bs-toggle="tooltip"
+                                            title="Edit Barang">
 
                                             <i class="ti ti-edit"></i>
 
@@ -226,7 +252,8 @@ ORDER BY barang.id DESC
                                         <a
                                             href="proses/hapusbarang.php?id=<?= $row['id']; ?>"
                                             class="btn btn-danger btn-sm"
-                                            title="Hapus"
+                                            data-bs-toggle="tooltip"
+                                            title="Hapus Barang"
                                             onclick="return confirm('Yakin ingin menghapus barang ini?')">
 
                                             <i class="ti ti-trash"></i>
@@ -237,22 +264,26 @@ ORDER BY barang.id DESC
 
                                 </tr>
 
-                            <?php
-
-                            }
-                        } else {
-
-                            ?>
+                            <?php }
+                        } else { ?>
 
                             <tr>
 
-                                <td colspan="10" class="text-center py-4">
+                                <td colspan="10" class="text-center py-5">
 
-                                    <div class="text-muted">
+                                    <i class="ti ti-package-off" style="font-size:60px;"></i>
 
-                                        Data barang tidak ditemukan.
+                                    <h5 class="mt-3">
 
-                                    </div>
+                                        Data barang tidak ditemukan
+
+                                    </h5>
+
+                                    <p class="text-muted">
+
+                                        Silakan tambahkan data barang baru.
+
+                                    </p>
 
                                 </td>
 
@@ -271,3 +302,11 @@ ORDER BY barang.id DESC
     </div>
 
 </div>
+
+<script>
+    document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(function(el) {
+
+        new bootstrap.Tooltip(el);
+
+    });
+</script>
