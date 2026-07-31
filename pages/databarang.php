@@ -1,5 +1,16 @@
 <?php
 
+$where = "";
+
+if (isset($_GET['keyword']) && $_GET['keyword'] != "") {
+
+    $keyword = mysqli_real_escape_string($koneksi, $_GET['keyword']);
+
+    $where = "WHERE
+                barang.kode_barang LIKE '%$keyword%'
+                OR barang.nama_barang LIKE '%$keyword%'";
+}
+
 $query = mysqli_query($koneksi, "
 SELECT
     barang.*,
@@ -10,6 +21,7 @@ LEFT JOIN kategori
     ON barang.id_kategori = kategori.id
 LEFT JOIN rak
     ON barang.id_rak = rak.id
+$where
 ORDER BY barang.id DESC
 ");
 
@@ -43,6 +55,41 @@ ORDER BY barang.id DESC
     <div class="card shadow-sm border-0 rounded-3">
 
         <div class="card-body">
+
+            <form method="GET" class="row g-3 mb-4">
+
+                <input type="hidden" name="page" value="databarang">
+
+                <div class="col-md-6">
+
+                    <input
+                        type="text"
+                        name="keyword"
+                        class="form-control"
+                        placeholder="Cari kode barang atau nama barang..."
+                        value="<?= isset($_GET['keyword']) ? htmlspecialchars($_GET['keyword']) : ''; ?>">
+
+                </div>
+
+                <div class="col-md-6">
+
+                    <button type="submit" class="btn btn-primary">
+
+                        <i class="ti ti-search"></i>
+                        Cari
+
+                    </button>
+
+                    <a href="index.php?page=databarang" class="btn btn-secondary">
+
+                        <i class="ti ti-refresh"></i>
+                        Reset
+
+                    </a>
+
+                </div>
+
+            </form>
 
             <div class="table-responsive">
 
@@ -203,7 +250,7 @@ ORDER BY barang.id DESC
 
                                     <div class="text-muted">
 
-                                        Belum ada data barang.
+                                        Data barang tidak ditemukan.
 
                                     </div>
 
