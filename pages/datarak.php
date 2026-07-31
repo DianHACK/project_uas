@@ -58,11 +58,14 @@ $totalRak = mysqli_num_rows($queryRak);
 
             <form method="GET">
 
-                <input type="hidden" name="page" value="datarak">
+                <input
+                    type="hidden"
+                    name="page"
+                    value="datarak">
 
-                <div class="row">
+                <div class="row g-2">
 
-                    <div class="col-md-10">
+                    <div class="col-md-8">
 
                         <input
                             type="text"
@@ -75,13 +78,29 @@ $totalRak = mysqli_num_rows($queryRak);
 
                     <div class="col-md-2 d-grid">
 
-                        <button type="submit" class="btn btn-primary">
+                        <button
+                            type="submit"
+                            class="btn btn-primary">
 
                             <i class="ti ti-search"></i>
 
                             Cari
 
                         </button>
+
+                    </div>
+
+                    <div class="col-md-2 d-grid">
+
+                        <a
+                            href="index.php?page=datarak"
+                            class="btn btn-secondary">
+
+                            <i class="ti ti-refresh"></i>
+
+                            Reset
+
+                        </a>
 
                     </div>
 
@@ -143,21 +162,13 @@ $totalRak = mysqli_num_rows($queryRak);
 
                         <tr>
 
-                            <th width="60">
-                                No
-                            </th>
+                            <th width="60">No</th>
 
-                            <th>
-                                Nama Rak
-                            </th>
+                            <th>Nama Rak</th>
 
-                            <th width="220">
-                                Tanggal Dibuat
-                            </th>
+                            <th width="220">Tanggal Dibuat</th>
 
-                            <th width="170">
-                                Aksi
-                            </th>
+                            <th width="170">Aksi</th>
 
                         </tr>
 
@@ -177,9 +188,7 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                 <tr>
 
-                                    <td>
-                                        <?= $no++; ?>
-                                    </td>
+                                    <td><?= $no++; ?></td>
 
                                     <td>
 
@@ -229,8 +238,7 @@ $totalRak = mysqli_num_rows($queryRak);
 
                             <tr>
 
-                                <td colspan="4"
-                                    class="text-center py-5">
+                                <td colspan="4" class="text-center py-5">
 
                                     <i class="ti ti-database-off fs-1 text-secondary"></i>
 
@@ -244,7 +252,9 @@ $totalRak = mysqli_num_rows($queryRak);
 
                                         <?php if ($keyword != "") { ?>
 
-                                            Data rak dengan kata kunci <strong><?= htmlspecialchars($keyword); ?></strong> tidak ditemukan.
+                                            Data rak dengan kata kunci
+                                            <strong><?= htmlspecialchars($keyword); ?></strong>
+                                            tidak ditemukan.
 
                                         <?php } else { ?>
 
