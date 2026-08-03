@@ -1,20 +1,39 @@
 <?php
-require_once "proses/koneksi.php";
-require_once "proses/helper.php";
-
 session_start();
 
-// Tampilkan error saat development
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
-// Cek Login
+require_once "proses/koneksi.php";
+require_once "proses/helper.php";
+
+// ==============================
+// CEK LOGIN
+// ==============================
 if (!isset($_SESSION['login'])) {
     header("Location: form-login.php");
     exit();
 }
 
-// Daftar halaman yang diizinkan
+// ==============================
+// AUTO LOGOUT (30 MENIT)
+// ==============================
+$timeout = 1800;
+
+if (isset($_SESSION['login_time'])) {
+    if ((time() - $_SESSION['login_time']) > $timeout) {
+        session_unset();
+        session_destroy();
+
+        header("Location: form-login.php");
+        exit();
+    }
+    $_SESSION['login_time'] = time();
+}
+
+// ==============================
+// DAFTAR HALAMAN
+// ==============================
 $halaman = [
     // Dashboard
     'home',
@@ -36,21 +55,22 @@ $halaman = [
 
     // Transaksi
     'penjualan',
+    'datapenjualan',
     'keranjang',
 
     // Laporan
     'laporan'
 ];
 
-// Halaman default
-$page = isset($_GET['page']) ? $_GET['page'] : 'home';
+// ==============================
+// PAGE
+// ==============================
+$page = $_GET['page'] ?? 'home';
 
-// Validasi halaman
 if (!in_array($page, $halaman)) {
     $page = 'home';
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="en" dir="ltr" data-bs-theme="light" data-color-theme="Blue_Theme" data-layout="vertical">
 

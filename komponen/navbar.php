@@ -191,7 +191,7 @@
                               </div>
                             </div>
                           </div>
-                          <a href="proses/logout.php" class="btn btn-outline-primary">Log Out</a>
+                          <a href="logout.php" class="btn btn-outline-primary">Log Out</a>
                         </div>
                       </div>
                     </div>
