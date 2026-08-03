@@ -59,7 +59,10 @@ $halaman = [
     'keranjang',
 
     // Laporan
-    'laporan'
+    'laporan',
+
+    // Monitor Log (Baru)
+    'monitorlog'
 ];
 
 // ==============================

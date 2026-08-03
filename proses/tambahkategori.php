@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once "koneksi.php";
+require_once "helper.php";
 
 if (!isset($_POST['simpan'])) {
     header("Location: ../index.php?page=datakategori");
@@ -14,7 +15,6 @@ $nama = trim($_POST['nama_kategori']);
 // ==========================
 
 if (empty($nama)) {
-
     echo "<script>
             alert('Nama kategori tidak boleh kosong!');
             window.history.back();
@@ -33,7 +33,6 @@ $cek = mysqli_query($koneksi, "
 ");
 
 if (mysqli_num_rows($cek) > 0) {
-
     echo "<script>
             alert('Kategori sudah tersedia!');
             window.history.back();
@@ -59,27 +58,24 @@ $simpan = mysqli_query($koneksi, "
 ");
 
 // ==========================
-// Redirect
+// Redirect & Catat Log
 // ==========================
 
 if ($simpan) {
 
+    // Catat aktivitas ke dalam Monitor Log
+    catat_log($koneksi, "Menambahkan kategori baru: " . $nama);
+
     echo "<script>
-
             alert('Kategori berhasil ditambahkan.');
-
             window.location='../index.php?page=datakategori';
-
           </script>";
 
 } else {
 
     echo "<script>
-
             alert('Kategori gagal ditambahkan.');
-
             window.history.back();
-
           </script>";
 
 }

@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once "koneksi.php";
+require_once "helper.php";
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -142,6 +143,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     ");
 
     if ($update) {
+
+        // Catat aktivitas ke dalam Monitor Log
+        catat_log($koneksi, "Memperbarui data barang: " . $nama_barang);
 
         echo "<script>
                 alert('Barang berhasil diperbarui.');

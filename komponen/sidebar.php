@@ -124,6 +124,14 @@
             </li>
             </ul>
         </li>
+        <li class="sidebar-item">
+            <a class="sidebar-link" href="index.php?page=monitorlog" aria-expanded="false">
+                <span>
+                    <i class="ti ti-history"></i>
+                </span>
+                <span class="hide-menu">Monitor Log</span>
+            </a>
+        </li>
         
         <li class="sidebar-item">
             <a class="sidebar-link" href="index.php?page=" id="get-url" aria-expanded="false">

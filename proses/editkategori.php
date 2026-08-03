@@ -1,12 +1,11 @@
 <?php
-
+session_start();
 require_once "koneksi.php";
+require_once "helper.php";
 
 if (!isset($_POST['update'])) {
-
     header("Location: ../index.php?page=datakategori");
     exit;
-
 }
 
 $id = (int) $_POST['id'];
@@ -17,17 +16,11 @@ $nama = trim($_POST['nama_kategori']);
 // ==========================
 
 if (empty($nama)) {
-
     echo "<script>
-
             alert('Nama kategori tidak boleh kosong.');
-
             window.history.back();
-
           </script>";
-
     exit;
-
 }
 
 // ==========================
@@ -42,17 +35,11 @@ $cek = mysqli_query($koneksi, "
 ");
 
 if (mysqli_num_rows($cek) > 0) {
-
     echo "<script>
-
             alert('Nama kategori sudah digunakan.');
-
             window.history.back();
-
           </script>";
-
     exit;
-
 }
 
 // ==========================
@@ -66,27 +53,24 @@ $update = mysqli_query($koneksi, "
 ");
 
 // ==========================
-// Redirect
+// Redirect & Catat Log
 // ==========================
 
 if ($update) {
 
+    // Catat aktivitas ke dalam Monitor Log
+    catat_log($koneksi, "Memperbarui data kategori menjadi: " . $nama);
+
     echo "<script>
-
             alert('Kategori berhasil diperbarui.');
-
             window.location='../index.php?page=datakategori';
-
           </script>";
 
 } else {
 
     echo "<script>
-
             alert('Kategori gagal diperbarui.');
-
             window.history.back();
-
           </script>";
 
 }

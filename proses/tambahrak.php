@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once "koneksi.php";
+require_once "helper.php";
 
 if (!isset($_POST['nama_rak'])) {
 
@@ -14,11 +15,8 @@ $nama_rak = trim(mysqli_real_escape_string($koneksi, $_POST['nama_rak']));
 if ($nama_rak == "") {
 
     echo "<script>
-
             alert('Nama rak tidak boleh kosong.');
-
             window.location='../index.php?page=tambahrak';
-
           </script>";
 
     exit;
@@ -34,11 +32,8 @@ $cek = mysqli_query($koneksi, "
 if (mysqli_num_rows($cek) > 0) {
 
     echo "<script>
-
             alert('Nama rak sudah digunakan.');
-
             window.location='../index.php?page=tambahrak';
-
           </script>";
 
     exit;
@@ -60,22 +55,19 @@ $simpan = mysqli_query($koneksi, "
 
 if ($simpan) {
 
+    // Catat aktivitas ke dalam Monitor Log
+    catat_log($koneksi, "Menambahkan rak baru: " . $nama_rak);
+
     echo "<script>
-
             alert('Data rak berhasil ditambahkan.');
-
             window.location='../index.php?page=datarak';
-
           </script>";
 
 } else {
 
     echo "<script>
-
             alert('Data rak gagal disimpan.');
-
             window.location='../index.php?page=tambahrak';
-
           </script>";
 
 }

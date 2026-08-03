@@ -1,6 +1,7 @@
 <?php
-
+session_start();
 require_once "koneksi.php";
+require_once "helper.php";
 
 if (!isset($_POST['id']) || !isset($_POST['nama_rak'])) {
     header("Location: ../index.php?page=datarak");
@@ -40,6 +41,10 @@ $update = mysqli_query($koneksi, "
 ");
 
 if ($update) {
+
+    // Catat aktivitas ke dalam Monitor Log
+    catat_log($koneksi, "Memperbarui data rak: " . $nama_rak);
+
     echo "<script>
             alert('Data rak berhasil diperbarui.');
             window.location='../index.php?page=datarak';

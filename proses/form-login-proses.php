@@ -1,6 +1,12 @@
 <?php
 session_start();
 require_once "koneksi.php";
+// Ambil username pengguna yang sedang login
+$username_log = $_SESSION['username'] ?? 'Administrator'; // Sesuaikan dengan variabel session Anda
+$aktivitas_log = "Berhasil melakukan login ke dalam sistem";
+
+// Simpan ke tabel log_aktivitas
+mysqli_query($koneksi, "INSERT INTO log_aktivitas (username, aktivitas) VALUES ('$username_log', '$aktivitas_log')");
 
 // Ambil data dari inputan form
 $username = mysqli_real_escape_string($koneksi, $_POST['username'] ?? '');
